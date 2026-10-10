@@ -1,91 +1,4 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f1f4f2;
-  color: #202820;
-}
-
-header {
-  background: #087443;
-  color: white;
-  padding: 25px 12px;
-  text-align: center;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 30px;
-}
-
-nav {
-  background: #064b2c;
-  padding: 15px 5px;
-  text-align: center;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-  margin: 0 12px;
-  font-weight: bold;
-}
-
-.welcome {
-  background: white;
-  padding: 25px 15px;
-  text-align: center;
-}
-
-main {
-  max-width: 850px;
-  margin: 25px auto;
-  padding: 0 15px;
-}
-
-.card {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 7px #00000012;
-}
-
-.card h2 {
-  color: #087443;
-  margin-top: 0;
-}
-
-.match {
-  padding: 13px 0;
-  border-bottom: 1px solid #ddd;
-}
-
-.match:last-child {
-  border-bottom: none;
-}
-
-.tag {
-  display: inline-block;
-  background: #e0f4e8;
-  color: #075d34;
-  padding: 5px 9px;
-  border-radius: 5px;
-  font-size: 13px;
-}
-
-footer {
-  background: #064b2c;
-  color: white;
-  padding: 22px;
-  text-align: center;
-}
-
-@media (max-width: 500px) {
-  nav a {
-    display: inline-block;
-    margin: 7px;
-  }
-}<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -315,6 +228,67 @@ function logout(){
 }
 </script>
 </body>
+<section id="aviator" style="background:#101b2d;color:white;padding:20px;border-radius:15px;text-align:center;font-family:Arial,sans-serif;margin:20px 0">
+  <h2>✈ Easy Choice Aviator</h2>
+  <p>Virtual credits only — demo game</p>
+  <div id="avMultiplier" style="font-size:42px;font-weight:bold">1.00×</div>
+  <div id="avPlane" style="font-size:50px;margin:20px">✈️</div>
+  <p>Demo balance: <strong id="avBalance">1000</strong> credits</p>
+  <input id="avBet" type="number" value="10" min="1" max="500" style="padding:12px;width:100px">
+  <button id="avStart" onclick="avStart()" style="padding:12px;background:#27d99a;border:0;border-radius:8px">Start Flight</button>
+  <button id="avCash" onclick="avCash()" disabled style="padding:12px;border:0;border-radius:8px">Cash Out</button>
+  <p id="avMessage">Ready to play.</p>
+</section>
+
+<script>
+let avMoney = 1000, avRound = null, avInterval = null;
+
+function avStart() {
+  if (avRound) return;
+  const bet = Number(document.getElementById('avBet').value);
+  if (!Number.isInteger(bet) || bet < 1 || bet > 500 || bet > avMoney) {
+    document.getElementById('avMessage').textContent = 'Enter a valid bet within your demo balance.';
+    return;
+  }
+  avMoney -= bet;
+  avRound = {bet, time: 0, crash: 1.5 + Math.random() * 3};
+  document.getElementById('avBalance').textContent = avMoney;
+  document.getElementById('avStart').disabled = true;
+  document.getElementById('avCash').disabled = false;
+  document.getElementById('avMessage').textContent = 'Flight running!';
+  avInterval = setInterval(() => {
+    if (!avRound) return;
+    avRound.time += 0.2;
+    const m = 1 + avRound.time * 0.25 + avRound.time ** 2 * 0.025;
+    document.getElementById('avMultiplier').textContent = m.toFixed(2) + '×';
+    document.getElementById('avPlane').style.transform =
+      'translate(' + Math.min(100, avRound.time * 12) + 'px,-' +
+      Math.min(65, avRound.time * 7) + 'px)';
+    if (m >= avRound.crash) avFinish(0, 'Flight ended. Demo bet lost.');
+  }, 200);
+}
+
+function avCash() {
+  if (!avRound) return;
+  const m = 1 + avRound.time * 0.25 + avRound.time ** 2 * 0.025;
+  const win = Math.floor(avRound.bet * m * 100) / 100;
+  avFinish(win, 'Demo cash-out at ' + m.toFixed(2) + '×.');
+}
+
+function avFinish(amount, message) {
+  clearInterval(avInterval);
+  avInterval = null;
+  avMoney += amount;
+  avRound = null;
+  document.getElementById('avBalance').textContent = avMoney.toFixed(2);
+  document.getElementById('avMessage').textContent = message;
+  document.getElementById('avStart').disabled = false;
+  document.getElementById('avCash').disabled = true;
+  document.getElementById('avPlane').style.transform = '';
+  document.getElementById('avMultiplier').textContent = 'Round ended';
+}
+</script>
+</body>
 </html><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -472,265 +446,10 @@ function logout(){
 
   <footer>
     <p>Easy Choice Sports © 2026</p>
-    <p>Football information for fans everywhere.
-</p><section id="football-fixtures" class="card">
-  <h2>📅 Upcoming Football Fixtures</h2>
-  <p>Check official schedules for the latest match dates.</p>
+    <p>Football information for fans everywhere.</p>
+  </footer>
 
-  <p>
-    <a href="https://www.premierleague.com/en/matches">
-      Premier League Fixtures
-    </a>
-  </p>
-
-  <p>
-    <a href="https://footballkenya.org/">
-      Kenyan Football News — FKF
-    </a>
-  </p>
-
-  <hr>
-
-  <h2 id="results">🏆 Match Results</h2>
-  <p>Check the official sources above for confirmed scores.</p>
-</section><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Easy Choice Sports</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f1f4f2;
-      color: #202820;
-    }
-
-    header {
-      background: #087443;
-      color: white;
-      padding: 25px 12px;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 30px;
-    }
-
-    nav {
-      background: #064b2c;
-      padding: 15px 5px;
-      text-align: center;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 12px;
-      font-weight: bold;
-    }
-
-    .welcome {
-      background: white;
-      padding: 25px 15px;
-      text-align: center;
-    }
-
-    main {
-      max-width: 850px;
-      margin: 25px auto;
-      padding: 0 15px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 7px #00000012;
-    }
-
-    .card h2 {
-      color: #087443;
-      margin-top: 0;
-    }
-
-    .match {
-      padding: 13px 0;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .match:last-child {
-      border-bottom: none;
-    }
-
-    .tag {
-      display: inline-block;
-      background: #e0f4e8;
-      color: #075d34;
-      padding: 5px 9px;
-      border-radius: 5px;
-      font-size: 13px;
-    }
-
-    footer {
-      background: #064b2c;
-      color: white;
-      padding: 22px;
-      text-align: center;
-    }
-
-    @media (max-width: 500px) {
-      nav a {
-        display: inline-block;
-        margin: 7px;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <header>
-    <h1>⚽ Easy Choice Sports</h1>
-    <p>Your home for football updates</p>
-  </header>
-
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#fixtures">Fixtures</a>
-    <a href="#results">Results</a>
-    <a href="#about">About</a>
-  </nav>
-
-  <section class="welcome" id="home">
-    <h2>Welcome to Easy Choice Sports</h2>
-    <p>Stay connected to the beautiful game.</p>
-    <span class="tag">Football • Teams • Results</span>
-  </section>
-
-  <main>
-    <section class="card" id="fixtures">
-      <h2>📅 Upcoming Fixtures</h2>
-      <p>Football match schedules will appear here.</p>
-      <div class="match">
-        <strong>Home Team vs Away Team</strong>
-        <p>Match date and time to be announced.</p>
-      </div>
-      <p><small>These are sample placeholders, not confirmed fixtures.</small></p>
-    </section>
-
-    <section class="card" id="results">
-      <h2>🏆 Match Results</h2>
-      <p>Check here for match results and scores.</p>
-      <div class="match">
-        <strong>Results coming soon</strong>
-        <p>Scores will be added when verified.</p>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>🌍 Football News</h2>
-      <p>Follow your favourite teams and competitions.
-      Visit again for more sports updates.</p>
-    </section>
-
-    <section class="card" id="about">
-      <h2>About Easy Choice Sports</h2>
-      <p>Easy Choice Sports is a football information website
-      for fixtures, results, teams, and sports news.</p>
-      <p>Built in Kenya 🇰🇪</p>
-    </section>
-  </main>
-
-  <footer>
-    <p>Easy Choice Sports © 2026</p>
-    <p>Football information for fans everywhere.
-</p><section id="football-fixtures" class="card">
-  <h2>📅 Upcoming Football Fixtures</h2>
-  <p>Check official schedules for the latest match dates.</p>
-
-  <p>
-    <a href="https://www.premierleague.com/en/matches">
-      Premier League Fixtures
-    </a>
-  </p>
-
-  <p>
-    <a href="https://footballkenya.org/">
-      Kenyan Football News — FKF
-    </a>
-  </p>
-
-  <hr><section id="aviator" style="background:#101b2d;color:white;padding:20px;border-radius:15px;text-align:center;font-family:Arial,sans-serif;margin:20px 0">
-  <h2>✈ Easy Choice Aviator</h2>
-  <p>Virtual credits only — demo game</p>
-  <div id="avMultiplier" style="font-size:42px;font-weight:bold">1.00×</div>
-  <div id="avPlane" style="font-size:50px;margin:20px">✈️</div>
-  <p>Demo balance: <strong id="avBalance">1000</strong> credits</p>
-  <input id="avBet" type="number" value="10" min="1" max="500" style="padding:12px;width:100px">
-  <button id="avStart" onclick="avStart()" style="padding:12px;background:#27d99a;border:0;border-radius:8px">Start Flight</button>
-  <button id="avCash" onclick="avCash()" disabled style="padding:12px;border:0;border-radius:8px">Cash Out</button>
-  <p id="avMessage">Ready to play.</p>
-</section>
-
-<script>
-let avMoney = 1000, avRound = null, avInterval = null;
-
-function avStart() {
-  if (avRound) return;
-  const bet = Number(document.getElementById('avBet').value);
-  if (!Number.isInteger(bet) || bet < 1 || bet > 500 || bet > avMoney) {
-    document.getElementById('avMessage').textContent = 'Enter a valid bet within your demo balance.';
-    return;
-  }
-  avMoney -= bet;
-  avRound = {bet, time: 0, crash: 1.5 + Math.random() * 3};
-  document.getElementById('avBalance').textContent = avMoney;
-  document.getElementById('avStart').disabled = true;
-  document.getElementById('avCash').disabled = false;
-  document.getElementById('avMessage').textContent = 'Flight running!';
-  avInterval = setInterval(() => {
-    if (!avRound) return;
-    avRound.time += 0.2;
-    const m = 1 + avRound.time * 0.25 + avRound.time ** 2 * 0.025;
-    document.getElementById('avMultiplier').textContent = m.toFixed(2) + '×';
-    document.getElementById('avPlane').style.transform =
-      'translate(' + Math.min(100, avRound.time * 12) + 'px,-' +
-      Math.min(65, avRound.time * 7) + 'px)';
-    if (m >= avRound.crash) avFinish(0, 'Flight ended. Demo bet lost.');
-  }, 200);
-}
-
-function avCash() {
-  if (!avRound) return;
-  const m = 1 + avRound.time * 0.25 + avRound.time ** 2 * 0.025;
-  const win = Math.floor(avRound.bet * m * 100) / 100;
-  avFinish(win, 'Demo cash-out at ' + m.toFixed(2) + '×.');
-}
-
-function avFinish(amount, message) {
-  clearInterval(avInterval);
-  avInterval = null;
-  avMoney += amount;
-  avRound = null;
-  document.getElementById('avBalance').textContent = avMoney.toFixed(2);
-  document.getElementById('avMessage').textContent = message;
-  document.getElementById('avStart').disabled = false;
-  document.getElementById('avCash').disabled = true;
-  document.getElementById('avPlane').style.transform = '';
-  document.getElementById('avMultiplier').textContent = 'Round ended';
-}
-</script>
 </body>
-</html> 
+</html>
 <div id="avPlane" style="font-size:60px;margin:20px">✈️</div>
-
-  <h2 id="results">🏆 Match Results</h2>
-  <p>Check the official sources above for confirmed scores.</p>
-</section>
+</html>

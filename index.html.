@@ -155,8 +155,25 @@
 
   <footer>
     <p>Easy Choice Sports © 2026</p>
-    <p>Football information for fans everywhere.</p>
-  </footer>
+    <p>Football information for fans everywhere.
+</p><section id="football-fixtures" class="card">
+  <h2>📅 Upcoming Football Fixtures</h2>
+  <p>Check official schedules for the latest match dates.</p>
 
-</body>
-</html>
+  <p>
+    <a href="https://www.premierleague.com/en/matches">
+      Premier League Fixtures
+    </a>
+  </p>
+
+  <p>
+    <a href="https://footballkenya.org/">
+      Kenyan Football News — FKF
+    </a>
+  </p>
+
+  <hr>
+
+  <h2 id="results">🏆 Match Results</h2>
+  <p>Check the official sources above for confirmed scores.</p>
+</section>

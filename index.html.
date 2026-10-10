@@ -1,4 +1,91 @@
-<!DOCTYPE html>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f1f4f2;
+  color: #202820;
+}
+
+header {
+  background: #087443;
+  color: white;
+  padding: 25px 12px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+nav {
+  background: #064b2c;
+  padding: 15px 5px;
+  text-align: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 12px;
+  font-weight: bold;
+}
+
+.welcome {
+  background: white;
+  padding: 25px 15px;
+  text-align: center;
+}
+
+main {
+  max-width: 850px;
+  margin: 25px auto;
+  padding: 0 15px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 7px #00000012;
+}
+
+.card h2 {
+  color: #087443;
+  margin-top: 0;
+}
+
+.match {
+  padding: 13px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.match:last-child {
+  border-bottom: none;
+}
+
+.tag {
+  display: inline-block;
+  background: #e0f4e8;
+  color: #075d34;
+  padding: 5px 9px;
+  border-radius: 5px;
+  font-size: 13px;
+}
+
+footer {
+  background: #064b2c;
+  color: white;
+  padding: 22px;
+  text-align: center;
+}
+
+@media (max-width: 500px) {
+  nav a {
+    display: inline-block;
+    margin: 7px;
+  }
+}<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">

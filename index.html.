@@ -403,6 +403,7 @@ function avFinish(amount, message) {
     <a href="#results">Results</a>
     <a href="#about">About</a>
   </nav>
+<h1>Aviator</h1>
 
   <section class="welcome" id="home">
     <h2>Welcome to Easy Choice Sports</h2>

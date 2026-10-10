@@ -1,6 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Easy Choice Kenya</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:white;font-family:Arial,sans-serif}
+header{padding:18px;background:#141d32;text-align:center;font-size:23px;font-weight:bold}
+header span{color:#27d99a}
+main{max-width:850px;margin:auto;padding:16px}
+.card{background:#141d32;padding:20px;border-radius:15px;margin-bottom:16px}
+h2,h3{margin-top:0}
+input{width:100%;padding:13px;margin:7px 0 15px;background:#0b1020;border:1px solid #35445f;border-radius:8px;color:white}
+button{padding:13px;border:0;border-radius:8px;background:#27d99a;font-weight:bold;cursor:pointer}
+.secondary{background:#293650;color:white}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.actions button{width:100%}
+.balance{font-size:32px;font-weight:bold;color:#27d99a}
+.muted{color:#aab7d0;font-size:13px}
+#game{height:210px;background:linear-gradient(140deg,#102f35,#172443);border-radius:12px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+#multiplier{font-size:42px;font-weight:bold}
+#plane{font-size:38px}
+.notice{background:#453818;color:#ffe5a0;padding:12px;border-radius:9px;font-size:13px}
+.hidden{display:none}
+#history div{padding:9px 0;border-bottom:1px solid #35445f;font-size:13px}
+</style>
+</head>
+<body>
+
+<header>EASY <span>CHOICE</span> KENYA</header>
+<main>
+<div class="notice">
+DEMO ONLY: Virtual credits have no cash value.
+No real deposits or withdrawals are processed.
+</div>
+
+<section class="card" id="login">
+<h2 id="formTitle">Create Account / Login</h2>
+<input id="username" placeholder="Username" autocomplete="username">
+<input id="password" type="password" placeholder="Password" autocomplete="current-password">
+<div class="actions">
+<button onclick="signup()">Sign Up</button>
+<button class="secondary" onclick="signin()">Log In</button>
+</div>
+<p class="muted" id="message"></p>
+<p class="muted">Demo account only. Do not use a real password.</p>
+</section>
+
+<section id="dashboard" class="hidden">
+<div class="card">
+<h3>My Wallet</h3>
+<p class="muted">Available demo credits</p>
+<div class="balance" id="balance">1000</div>
+<div class="actions">
+<button onclick="deposit()">Deposit Demo Credits</button>
+<button class="secondary" onclick="withdraw()">Withdraw Demo Credits</button>
+</div>
+<p class="muted" id="walletMessage"></p>
+</div>
+
+<div class="card">
+<h2>✈ Aviator Flight</h2>
+<div id="game">
+<div id="multiplier">1.00×</div>
+<div id="plane">✈</div>
+</div>
+<p class="muted">Bet using virtual credits only.</p>
+<input id="bet" type="number" min="1" value="10" placeholder="Bet amount">
+<div class="actions">
+<button id="play" onclick="play()">Start Flight</button>
+<button class="secondary" id="cashout" onclick="cashout()" disabled>Cash Out</button>
+</div>
+<p id="gameMessage" class="muted">Ready to play.</p>
+</div>
+
+<div class="card">
+<h3>Transaction History</h3>
+<div id="history" class="muted">No transactions yet.</div>
+<button class="secondary" onclick="logout()">Log Out</button>
+</div>
+</section>
+</main>
+
+<script>
+let user = "";
+let credits = 1000;
+let timer = null;
+let flight = null;
+let history = [];
+
+function signup(){
+ const name=document.getElementById("username").value.trim();
+ const pass=document.getElementById("password").value;
+ if(name.length<3 || pass.length<4){
+  msg("Use a username of 3+ characters and password of 4+ characters.");return;
+ }
+ const accounts=JSON.parse(localStorage.getItem("ec_accounts")||"{}");
+ if(accounts[name]){msg("Username already exists.");return;}
+ accounts[name]={password:pass,credits:1000,history:[]};
+ localStorage.setItem("ec_accounts",JSON.stringify(accounts));
+ msg("Account created. Now log in.");
+}
+
+function signin(){
+ const name=document.getElementById("username").value.trim();
+ const pass=document.getElementById("password").value;
+ const accounts=JSON.parse(localStorage.getItem("ec_accounts")||"{}");
+ if(!accounts[name]||accounts[name].password!==pass){
+  msg("Incorrect login. Create an account first.");return;
+ }
+ user=name;
+ credits=accounts[name].credits;
+ history=accounts[name].history||[];
+ document.getElementById("login").classList.add("hidden");
+ document.getElementById("dashboard").classList.remove("hidden");
+ render();
+}
+
+function msg(text){document.getElementById("message").textContent=text;}
+
+function save(){
+ const accounts=JSON.parse(localStorage.getItem("ec_accounts")||"{}");
+ if(accounts[user]){
+  accounts[user].credits=credits;
+  accounts[user].history=history.slice(0,15);
+  localStorage.setItem("ec_accounts",JSON.stringify(accounts));
+ }
+}
+
+function record(label,amount){
+ history.unshift(label+": "+(amount>=0?"+":"")+amount+" credits");
+ save();
+ render();
+}
+
+function render(){
+ document.getElementById("balance").textContent=credits.toFixed(2);
+ document.getElementById("history").innerHTML=history.length
+  ? history.slice(0,10).map(x=>"<div>"+safe(x)+"</div>").join("")
+  :"No transactions yet.";
+}
+
+function safe(text){
+ const d=document.createElement("div");
+ d.textContent=text;
+ return d.innerHTML;
+}
+
+function deposit(){
+ const amount=Number(prompt("Demo deposit amount (1–500 credits):"));
+ if(!Number.isFinite(amount)||amount<1||amount>500)return;
+ credits+=amount;
+ record("Demo deposit",amount);
+ document.getElementById("walletMessage").textContent="Virtual credits added. No money was paid.";
+}
+
+function withdraw(){
+ const amount=Number(prompt("Demo withdrawal amount (1–500 credits):"));
+ if(!Number.isFinite(amount)||amount<1||amount>500)return;
+ if(amount>credits){
+  document.getElementById("walletMessage").textContent="Insufficient demo credits.";
+  return;
+ }
+ credits-=amount;
+ record("Demo withdrawal",-amount);
+ document.getElementById("walletMessage").textContent="Demo withdrawal recorded. No money was sent.";
+}
+
+function play(){
+ if(flight)return;
+ const bet=Number(document.getElementById("bet").value);
+ if(!Number.isInteger(bet)||bet<1||bet>500||bet>credits){
+  document.getElementById("gameMessage").textContent="Enter a valid bet within your available credits.";
+  return;
+ }
+ credits-=bet;
+ record("Flight bet",-bet);
+ flight={bet:bet,m:1,elapsed:0,end:1.5+Math.random()*3};
+ document.getElementById("play").disabled=true;
+ document.getElementById("cashout").disabled=false;
+ document.getElementById("gameMessage").textContent="Flight running. Cash out before it ends.";
+ timer=setInterval(()=>{
+  if(!flight)return;
+  flight.elapsed+=0.2;
+  flight.m=1+flight.elapsed*0.25+flight.elapsed*flight.elapsed*0.025;
+  document.getElementById("multiplier").textContent=flight.m.toFixed(2)+"×";
+  document.getElementById("plane").style.transform=
+   "translate("+Math.min(100,flight.elapsed*12)+"px,-"+Math.min(65,flight.elapsed*7)+"px)";
+  if(flight.m>=flight.end){
+   document.getElementById("multiplier").textContent="FLIGHT ENDED";
+   finish("Flight ended. Your demo bet was used.",0);
+  }
+ },200);
+}
+
+function cashout(){
+ if(!flight)return;
+ const winnings=Math.floor(flight.bet*flight.m*100)/100;
+ finish("Cashed out at "+flight.m.toFixed(2)+"×. Virtual credits only.",winnings);
+}
+
+function finish(message,winnings){
+ clearInterval(timer);
+ timer=null;
+ flight=null;
+ document.getElementById("play").disabled=false;
+ document.getElementById("cashout").disabled=true;
+ document.getElementById("gameMessage").textContent=message;
+ if(winnings>0){credits+=winnings;record("Flight cash-out",winnings);}
+ save();
+ render();
+}
+
+function logout(){
+ if(timer)clearInterval(timer);
+ timer=null;flight=null;user="";
+ document.getElementById("dashboard").classList.add("hidden");
+ document.getElementById("login").classList.remove("hidden");
+ document.getElementById("username").value="";
+ document.getElementById("password").value="";
+ document.getElementById("multiplier").textContent="1.00×";
+ document.getElementById("plane").style.transform="";
+ document.getElementById("play").disabled=false;
+ document.getElementById("cashout").disabled=true;
+ msg("You have logged out.");
+}
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Easy Choice Sports</title>

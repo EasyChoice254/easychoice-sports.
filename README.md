@@ -1,2 +1,162 @@
-# easychoice-sports.
-Welcome to Easy Choice Sports — your destination for football fixtures, live scores, match results, team updates, and league standings. Follow your favourite teams and stay updated with the latest sports action. Simple, fast, and accessible on your phone. ⚽
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Easy Choice Sports</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f4f2;
+      color: #202820;
+    }
+
+    header {
+      background: #087443;
+      color: white;
+      padding: 25px 12px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    nav {
+      background: #064b2c;
+      padding: 15px 5px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 12px;
+      font-weight: bold;
+    }
+
+    .welcome {
+      background: white;
+      padding: 25px 15px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 850px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 7px #00000012;
+    }
+
+    .card h2 {
+      color: #087443;
+      margin-top: 0;
+    }
+
+    .match {
+      padding: 13px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .match:last-child {
+      border-bottom: none;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e0f4e8;
+      color: #075d34;
+      padding: 5px 9px;
+      border-radius: 5px;
+      font-size: 13px;
+    }
+
+    footer {
+      background: #064b2c;
+      color: white;
+      padding: 22px;
+      text-align: center;
+    }
+
+    @media (max-width: 500px) {
+      nav a {
+        display: inline-block;
+        margin: 7px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>⚽ Easy Choice Sports</h1>
+    <p>Your home for football updates</p>
+  </header>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#fixtures">Fixtures</a>
+    <a href="#results">Results</a>
+    <a href="#about">About</a>
+  </nav>
+
+  <section class="welcome" id="home">
+    <h2>Welcome to Easy Choice Sports</h2>
+    <p>Stay connected to the beautiful game.</p>
+    <span class="tag">Football • Teams • Results</span>
+  </section>
+
+  <main>
+    <section class="card" id="fixtures">
+      <h2>📅 Upcoming Fixtures</h2>
+      <p>Football match schedules will appear here.</p>
+      <div class="match">
+        <strong>Home Team vs Away Team</strong>
+        <p>Match date and time to be announced.</p>
+      </div>
+      <p><small>These are sample placeholders, not confirmed fixtures.</small></p>
+    </section>
+
+    <section class="card" id="results">
+      <h2>🏆 Match Results</h2>
+      <p>Check here for match results and scores.</p>
+      <div class="match">
+        <strong>Results coming soon</strong>
+        <p>Scores will be added when verified.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>🌍 Football News</h2>
+      <p>Follow your favourite teams and competitions.
+      Visit again for more sports updates.</p>
+    </section>
+
+    <section class="card" id="about">
+      <h2>About Easy Choice Sports</h2>
+      <p>Easy Choice Sports is a football information website
+      for fixtures, results, teams, and sports news.</p>
+      <p>Built in Kenya 🇰🇪</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Easy Choice Sports © 2026</p>
+    <p>Football information for fans everywhere.</p>
+  </footer>
+
+</body>
+</html>

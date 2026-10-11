@@ -449,7 +449,248 @@ function avFinish(amount, message) {
     <p>Easy Choice Sports © 2026</p>
     <p>Football information for fans everywhere.</p>
   </footer>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Easy Choice Sports</title>
+<style>
+:root {
+  --bg: #10151e;
+  --panel: #1b2430;
+  --green: #b8f34b;
+  --muted: #aab5c4;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: white;
+}
+header {
+  padding: 20px;
+  background: #19222e;
+  border-bottom: 2px solid var(--green);
+}
+.brand { font-size: 24px; font-weight: 800; }
+.brand span { color: var(--green); }
+nav {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-top: 16px;
+}
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-weight: bold;
+}
+nav button { background: #303c4c; color: white; }
+nav button.active, .primary {
+  background: var(--green);
+  color: #111;
+}
+main { max-width: 950px; margin: auto; padding: 18px; }
+.hero {
+  background: linear-gradient(120deg,#283b32,#1b2430);
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+h1 { font-size: 30px; margin: 0 0 10px; }
+h2 { font-size: 21px; }
+.muted { color: var(--muted); line-height: 1.5; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 14px;
+}
+.card {
+  background: var(--panel);
+  padding: 18px;
+  border-radius: 13px;
+  margin-bottom: 14px;
+}
+.teams {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: bold;
+  margin: 18px 0;
+}
+.tag { color: var(--green); font-size: 12px; }
+select {
+  width: 100%;
+  padding: 12px;
+  background: #303c4c;
+  color: white;
+  border-radius: 8px;
+  border: 0;
+  margin: 8px 0 12px;
+}
+.result { margin-top: 12px; color: var(--green); }
+#plane {
+  font-size: 42px;
+  display: inline-block;
+  transition: transform .2s;
+}
+footer {
+  padding: 25px;
+  text-align: center;
+  color: var(--muted);
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">EASY CHOICE <span>SPORTS</span></div>
+  <div class="muted">Your sports information centre</div>
+  <nav id="nav">
+    <button class="active" data-sport="All">All sports</button>
+    <button data-sport="Football">⚽ Football</button>
+    <button data-sport="Basketball">🏀 Basketball</button>
+    <button data-sport="Tennis">🎾 Tennis</button>
+  </nav>
+</header>
 
+<main>
+  <section class="hero">
+    <div class="tag">WELCOME TO EASY CHOICE SPORTS</div>
+    <h1>Every match. Every moment.</h1>
+    <p class="muted">Explore sports, view sample fixtures and test your match predictions for free.</p>
+    <button class="primary" onclick="document.querySelector('#matches').scrollIntoView({behavior:'smooth'})">
+      Explore matches ↓
+    </button>
+  </section>
+
+  <section>
+    <h2>🏆 Sports centre</h2>
+    <div class="grid">
+      <div class="card">
+        <div style="font-size:28px">⚽</div>
+        <h3>Football</h3>
+        <p class="muted">Fixtures, results and match information.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:28px">🏀</div>
+        <h3>Basketball</h3>
+        <p class="muted">Game schedules and scoreboards.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:28px">🎾</div>
+        <h3>Tennis</h3>
+        <p class="muted">Explore sample match information.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="matches">
+    <h2>📅 Sample fixtures</h2>
+    <p class="muted">These are demonstration matchups, not verified upcoming fixtures or live scores.</p>
+    <div id="matchList" class="grid"></div>
+  </section>
+
+  <section class="card">
+    <h2>🎯 Free prediction practice</h2>
+    <p class="muted">Choose a sample match and make a prediction. No money or prizes are involved.</p>
+    <label for="matchChoice">Match</label>
+    <select id="matchChoice">
+      <option>Arsenal vs Chelsea</option>
+      <option>Lakers vs Warriors</option>
+      <option>Player A vs Player B</option>
+    </select>
+    <label for="prediction">Your prediction</label>
+    <select id="prediction">
+      <option value="Home">First team wins</option>
+      <option value="Draw">Draw (football only)</option>
+      <option value="Away">Second team wins</option>
+    </select>
+    <button class="primary" id="predictBtn">Save practice prediction</button>
+    <div id="predictionResult" class="result" aria-live="polite"></div>
+  </section>
+
+  <section class="card">
+    <h2>✈️ Flight animation demo</h2>
+    <p class="muted">A simple animation for learning JavaScript. It has no wagers, multipliers, deposits or cash-outs.</p>
+    <div id="plane">✈️</div>
+    <p id="flightStatus" class="muted">Ready to animate</p>
+    <button class="primary" id="flyBtn">Start animation</button>
+  </section>
+
+  <section class="card">
+    <h2>About Easy Choice Sports</h2>
+    <p class="muted">A demonstration sports website built to explore website design, fixtures, scoreboards and interactive practice features.</p>
+  </section>
+</main>
+
+<footer>
+  Easy Choice Sports · Demo website · Sample data only
+</footer>
+
+<script>
+const matches = [
+  {sport:"Football",home:"Arsenal",away:"Chelsea"},
+  {sport:"Football",home:"Gor Mahia",away:"AFC Leopards"},
+  {sport:"Basketball",home:"Lakers",away:"Warriors"},
+  {sport:"Tennis",home:"Player A",away:"Player B"}
+];
+
+function showMatches(sport="All") {
+  const visible = matches.filter(m => sport === "All" || m.sport === sport);
+  document.getElementById("matchList").innerHTML = visible.map(m => `
+    <article class="card">
+      <div class="tag">${m.sport.toUpperCase()} · SAMPLE</div>
+      <div class="teams"><span>${m.home}</span><span>vs</span><span>${m.away}</span></div>
+      <p class="muted">Demonstration matchup · No live score</p>
+    </article>`).join("");
+}
+
+document.querySelectorAll("[data-sport]").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll("[data-sport]").forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
+    showMatches(button.dataset.sport);
+  });
+});
+
+document.getElementById("predictBtn").addEventListener("click", () => {
+  const match = document.getElementById("matchChoice").value;
+  const choice = document.getElementById("prediction").value;
+  document.getElementById("predictionResult").textContent =
+    `Practice selection saved for this session: ${match} — ${choice}. No money involved.`;
+});
+
+let running = false;
+document.getElementById("flyBtn").addEventListener("click", () => {
+  if (running) return;
+  running = true;
+  const plane = document.getElementById("plane");
+  const status = document.getElementById("flightStatus");
+  const button = document.getElementById("flyBtn");
+  button.disabled = true;
+  status.textContent = "Animation running...";
+  let step = 0;
+  const timer = setInterval(() => {
+    step++;
+    plane.style.transform = `translate(${step * 12}px, ${-step * 5}px)`;
+    if (step >= 10) {
+      clearInterval(timer);
+      plane.style.transform = "translate(0,0)";
+      status.textContent = "Animation complete!";
+      button.disabled = false;
+      running = false;
+    }
+  }, 180);
+});
+
+showMatches();
+</script>
+</body>
+</html>
 </body>
 </html>
 <div id="avPlane" style="font-size:60px;margin:20px">✈️</div>

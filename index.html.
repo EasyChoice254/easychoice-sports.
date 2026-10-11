@@ -549,7 +549,7 @@ footer {
 <header>
   <div class="brand">EASY CHOICE <span>SPORTS</span></div>
   <div class="muted">Your sports information centre</div>
-  <nav id="nav">
+  <#nav id="nav">
     <button class="active" data-sport="All">All sports</button>
     <button data-sport="Football">⚽ Football</button>
     <button data-sport="Basketball">🏀 Basketball</button>
